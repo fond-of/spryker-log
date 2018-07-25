@@ -19,5 +19,5 @@ coverage:
   include:
     - src/*.php
   exclude:
-    - src/FondOfSpryker/Zed/Log/Communication/Plugin/Hanlder/*.php
-    - src/FondOfSpryker/Yves/Log/Plugin/Hanlder/*.php
+    - src/FondOfSpryker/Zed/Log/Communication/Plugin/Handler/*.php
+    - src/FondOfSpryker/Yves/Log/Plugin/Handler/*.php
