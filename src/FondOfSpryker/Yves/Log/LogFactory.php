@@ -35,7 +35,7 @@ class LogFactory extends BaseLogFactory
      */
     protected function createGelfMessageFormatter()
     {
-        return new GelfMessageFormatter(APPLICATION_STORE . '_' . APPLICATION_ENV . '_yves');
+        return new GelfMessageFormatter(APPLICATION);
     }
 
     /**

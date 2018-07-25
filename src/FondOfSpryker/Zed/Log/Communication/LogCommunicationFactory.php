@@ -35,7 +35,7 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
      */
     protected function createGelfMessageFormatter()
     {
-        return new GelfMessageFormatter(APPLICATION_STORE . '_' . APPLICATION_ENV . '_zed');
+        return new GelfMessageFormatter(APPLICATION);
     }
 
     /**
