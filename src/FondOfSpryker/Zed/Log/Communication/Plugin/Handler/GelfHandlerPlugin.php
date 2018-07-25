@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\Log\Communication\Plugin\Handler;
 
+use FondOfSpryker\Shared\Log\GelfHandlerPluginTrait;
 use Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
@@ -11,5 +12,5 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  */
 class GelfHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
 {
-    use GelfHandlerPuginTrait;
+    use GelfHandlerPluginTrait;
 }

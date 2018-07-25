@@ -2,7 +2,7 @@
 
 namespace FondOfSpryker\Yves\Log\Plugin\Handler;
 
-use FondOfSpryker\Shared\Log\GelfHandlerPuginTrait;
+use FondOfSpryker\Shared\Log\GelfHandlerPluginTrait;
 use Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
@@ -11,5 +11,5 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class GelfHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
 {
-    use GelfHandlerPuginTrait;
+    use GelfHandlerPluginTrait;
 }
