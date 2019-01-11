@@ -47,7 +47,7 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
         return new Publisher($this->createUdpTransport());
     }
 
-    /**^
+    /**
      * Deprecated: Will be renamed to createServerProcessorPublic() in the next major release
      *
      * @return \Spryker\Shared\Log\Processor\ProcessorInterface
