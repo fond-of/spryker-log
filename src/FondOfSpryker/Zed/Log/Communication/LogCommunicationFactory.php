@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\Log\Communication;
 
+use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
@@ -44,6 +45,16 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     protected function createPublisher(): PublisherInterface
     {
         return new Publisher($this->createUdpTransport());
+    }
+
+    /**
+     * Deprecated: Will be renamed to createServerProcessorPublic() in the next major release
+     *
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    public function createServerProcessorPublic()
+    {
+        return new ServerProcessor();
     }
 
     /**
