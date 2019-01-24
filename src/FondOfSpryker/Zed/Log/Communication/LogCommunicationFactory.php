@@ -2,7 +2,7 @@
 
 namespace FondOfSpryker\Zed\Log\Communication;
 
-use FondOfSpryker\Shared\Log\ServerProcessor;
+use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;

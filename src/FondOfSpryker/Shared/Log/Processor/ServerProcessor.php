@@ -1,6 +1,6 @@
 <?php
 
-namespace FondOfSpryker\Shared\Log;
+namespace FondOfSpryker\Shared\Log\Processor;
 
 use Spryker\Shared\Log\Processor\ServerProcessor as SprykerServerProcessor;
 use Symfony\Component\HttpFoundation\Request;
