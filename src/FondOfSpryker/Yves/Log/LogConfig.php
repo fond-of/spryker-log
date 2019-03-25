@@ -22,4 +22,28 @@ class LogConfig extends BaseLogConfig
     {
         return $this->get(LogConstants::LOGSTASH_PORT, LogConstants::LOGSTASH_PORT_VALUE);
     }
+
+    /**
+     * @return string
+     */
+    public function getSlackUsername(): string
+    {
+        return $this->get(LogConstants::SLACK_USERNAME, LogConstants::SLACK_USERNAME_VALUE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlackChannel(): string
+    {
+        return $this->get(LogConstants::SLACK_CHANNEL, LogConstants::SLACK_CHANNEL_VALUE);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlackToken(): string
+    {
+        return $this->get(LogConstants::SLACK_TOKEN, '');
+    }
 }

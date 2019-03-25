@@ -9,6 +9,7 @@ use Gelf\Transport\AbstractTransport;
 use Gelf\Transport\UdpTransport;
 use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Handler\GelfHandler;
+use Monolog\Handler\SlackHandler;
 use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicationFactory;
 
 /**
@@ -16,6 +17,25 @@ use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicatio
  */
 class LogCommunicationFactory extends BaseLogCommunicationFactory
 {
+    /**
+     * @throws
+     *
+     * @return \Monolog\Handler\HandlerInterface|\Monolog\Handler\SlackHandler
+     */
+    public function createSlackHandler(): SlackHandler
+    {
+        $slackHandler = new SlackHandler(
+            $this->getConfig()->getSlackToken(),
+            $this->getConfig()->getSlackChannel(),
+            $this->getConfig()->getSlackUsername(),
+            true,
+            null,
+            $this->getConfig()->getLogLevel()
+        );
+
+        return $slackHandler;
+    }
+
     /**
      * @return \Monolog\Handler\HandlerInterface|\Monolog\Handler\GelfHandler
      */
