@@ -1,9 +1,9 @@
 <?php
 
-namespace FondOfSpryker\Zed\Log;
+namespace FondOfSpryker\Glue\Log;
 
 use FondOfSpryker\Shared\Log\LogConstants;
-use Spryker\Zed\Log\LogConfig as BaseLogConfig;
+use Spryker\Glue\Log\LogConfig as BaseLogConfig;
 
 class LogConfig extends BaseLogConfig
 {

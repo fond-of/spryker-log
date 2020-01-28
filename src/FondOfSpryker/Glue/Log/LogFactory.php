@@ -1,8 +1,7 @@
 <?php
 
-namespace FondOfSpryker\Zed\Log\Communication;
+namespace FondOfSpryker\Glue\Log;
 
-use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
@@ -10,12 +9,12 @@ use Gelf\Transport\UdpTransport;
 use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
-use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicationFactory;
+use Spryker\Glue\Log\LogFactory as BaseLogFactory;
 
 /**
- * @method \FondOfSpryker\Zed\Log\LogConfig getConfig()
+ * @method \FondOfSpryker\Glue\Log\LogConfig getConfig()
  */
-class LogCommunicationFactory extends BaseLogCommunicationFactory
+class LogFactory extends BaseLogFactory
 {
     /**
      * @throws
@@ -54,7 +53,7 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     /**
      * @return \Monolog\Formatter\FormatterInterface|\Monolog\Formatter\GelfMessageFormatter
      */
-    protected function createGelfMessageFormatter()
+    protected function createGelfMessageFormatter(): GelfMessageFormatter
     {
         return new GelfMessageFormatter(APPLICATION);
     }
@@ -68,23 +67,12 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     }
 
     /**
-     * Deprecated: Will be renamed to createServerProcessorPublic() in the next major release
-     *
-     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
-     */
-    public function createServerProcessorPublic()
-    {
-        return new ServerProcessor();
-    }
-
-    /**
      * @return \Gelf\Transport\AbstractTransport
      */
     protected function createUdpTransport(): AbstractTransport
     {
         $host = $this->getConfig()->getLogstashHost();
         $port = $this->getConfig()->getLogstashPort();
-
         return new UdpTransport($host, $port);
     }
 }

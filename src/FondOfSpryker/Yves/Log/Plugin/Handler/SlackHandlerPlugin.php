@@ -2,14 +2,14 @@
 
 namespace FondOfSpryker\Yves\Log\Plugin\Handler;
 
-use FondOfSpryker\Shared\Log\GelfHandlerPluginTrait;
+use FondOfSpryker\Shared\Log\SlackHandlerPluginTrait;
 use Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
  * @method \FondOfSpryker\Yves\Log\LogFactory getFactory()
  */
-class GelfHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
+class SlackHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
 {
-    use GelfHandlerPluginTrait;
+    use SlackHandlerPluginTrait;
 }
