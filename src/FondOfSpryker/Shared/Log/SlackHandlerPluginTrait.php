@@ -20,6 +20,7 @@ trait SlackHandlerPluginTrait
         if (!$this->handler) {
             $this->handler = $this->getFactory()->createSlackHandler();
         }
+
         return $this->handler;
     }
 
@@ -28,7 +29,7 @@ trait SlackHandlerPluginTrait
      *
      * @return bool
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return $this->getHandler()->isHandling($record);
     }
@@ -38,7 +39,7 @@ trait SlackHandlerPluginTrait
      *
      * @return bool
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         return $this->getHandler()->handle($record);
     }
@@ -48,7 +49,7 @@ trait SlackHandlerPluginTrait
      *
      * @return void
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
         $this->getHandler()->handleBatch($records);
     }
@@ -58,7 +59,7 @@ trait SlackHandlerPluginTrait
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function pushProcessor($callback)
+    public function pushProcessor($callback): HandlerInterface
     {
         return $this->getHandler()->pushProcessor($callback);
     }
@@ -66,7 +67,7 @@ trait SlackHandlerPluginTrait
     /**
      * @return callable
      */
-    public function popProcessor()
+    public function popProcessor(): callable
     {
         return $this->getHandler()->popProcessor();
     }
@@ -76,7 +77,7 @@ trait SlackHandlerPluginTrait
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         return $this->getHandler()->setFormatter($formatter);
     }
@@ -84,8 +85,16 @@ trait SlackHandlerPluginTrait
     /**
      * @return \Monolog\Formatter\FormatterInterface
      */
-    public function getFormatter()
+    public function getFormatter(): FormatterInterface
     {
         return $this->getHandler()->getFormatter();
+    }
+
+    /**
+     * @return void
+     */
+    public function close(): void
+    {
+        $this->getHandler()->close();
     }
 }
