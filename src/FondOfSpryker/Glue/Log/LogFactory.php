@@ -17,8 +17,6 @@ use Spryker\Glue\Log\LogFactory as BaseLogFactory;
 class LogFactory extends BaseLogFactory
 {
     /**
-     * @throws
-     *
      * @return \Monolog\Handler\HandlerInterface|\Monolog\Handler\SlackHandler
      */
     public function createSlackHandler(): SlackHandler
@@ -73,6 +71,7 @@ class LogFactory extends BaseLogFactory
     {
         $host = $this->getConfig()->getLogstashHost();
         $port = $this->getConfig()->getLogstashPort();
+
         return new UdpTransport($host, $port);
     }
 }

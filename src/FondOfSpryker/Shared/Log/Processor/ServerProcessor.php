@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ServerProcessor extends SprykerServerProcessor
 {
-    const X_FORWARDED_FOR = 'x_forwarded_for';
+    public const X_FORWARDED_FOR = 'x_forwarded_for';
 
     /**
      * Get data

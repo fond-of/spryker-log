@@ -18,8 +18,6 @@ use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicatio
 class LogCommunicationFactory extends BaseLogCommunicationFactory
 {
     /**
-     * @throws
-     *
      * @return \Monolog\Handler\HandlerInterface|\Monolog\Handler\SlackHandler
      */
     public function createSlackHandler(): SlackHandler

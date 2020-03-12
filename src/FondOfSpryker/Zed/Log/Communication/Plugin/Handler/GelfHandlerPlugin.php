@@ -9,6 +9,7 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 /**
  * @method \FondOfSpryker\Zed\Log\Communication\LogCommunicationFactory getFactory()
  * @method \Spryker\Zed\Log\Business\LogFacadeInterface getFacade()
+ * @method \FondOfSpryker\Zed\Log\LogConfig getConfig()
  */
 class GelfHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
 {
