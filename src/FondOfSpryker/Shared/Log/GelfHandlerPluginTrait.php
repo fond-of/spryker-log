@@ -4,6 +4,7 @@ namespace FondOfSpryker\Shared\Log;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
+use Monolog\Logger;
 
 trait GelfHandlerPluginTrait
 {
@@ -20,6 +21,7 @@ trait GelfHandlerPluginTrait
         if (!$this->handler) {
             $this->handler = $this->getFactory()->createGelfHandler();
         }
+
         return $this->handler;
     }
 
@@ -28,7 +30,7 @@ trait GelfHandlerPluginTrait
      *
      * @return bool
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return $this->getHandler()->isHandling($record);
     }
@@ -38,7 +40,7 @@ trait GelfHandlerPluginTrait
      *
      * @return bool
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         return $this->getHandler()->handle($record);
     }
@@ -48,7 +50,7 @@ trait GelfHandlerPluginTrait
      *
      * @return void
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
         $this->getHandler()->handleBatch($records);
     }
@@ -58,7 +60,7 @@ trait GelfHandlerPluginTrait
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function pushProcessor($callback)
+    public function pushProcessor($callback): HandlerInterface
     {
         return $this->getHandler()->pushProcessor($callback);
     }
@@ -66,7 +68,7 @@ trait GelfHandlerPluginTrait
     /**
      * @return callable
      */
-    public function popProcessor()
+    public function popProcessor(): callable
     {
         return $this->getHandler()->popProcessor();
     }
@@ -76,7 +78,7 @@ trait GelfHandlerPluginTrait
      *
      * @return \Monolog\Handler\HandlerInterface
      */
-    public function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         return $this->getHandler()->setFormatter($formatter);
     }
@@ -84,8 +86,22 @@ trait GelfHandlerPluginTrait
     /**
      * @return \Monolog\Formatter\FormatterInterface
      */
-    public function getFormatter()
+    public function getFormatter(): FormatterInterface
     {
         return $this->getHandler()->getFormatter();
+    }
+
+    /**
+     * @void
+     *
+     * @return void
+     */
+    public function close(): void
+    {
+        if (Logger::API === 1) {
+            return;
+        }
+
+        $this->getHandler()->close();
     }
 }

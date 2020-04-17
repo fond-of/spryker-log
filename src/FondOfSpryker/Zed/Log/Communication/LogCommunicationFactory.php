@@ -7,6 +7,7 @@ use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
 use Gelf\Transport\UdpTransport;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
@@ -54,7 +55,7 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     /**
      * @return \Monolog\Formatter\FormatterInterface|\Monolog\Formatter\GelfMessageFormatter
      */
-    protected function createGelfMessageFormatter()
+    protected function createGelfMessageFormatter(): FormatterInterface
     {
         return new GelfMessageFormatter(APPLICATION);
     }
