@@ -3,9 +3,9 @@
 namespace FondOfSpryker\Yves\Log;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Shared\Log\LogConstants;
 use Monolog\Handler\GelfHandler;
-use org\bovigo\vfs\vfsStream;
-use Spryker\Shared\Config\Config;
+use Monolog\Logger;
 
 class LogFactoryTest extends Unit
 {
@@ -15,28 +15,39 @@ class LogFactoryTest extends Unit
     protected $logCommunicationFactory;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\Log\LogConfig
+     */
+    protected $logConfigMock;
+
+    /**
      * @return void
      */
-    protected function _before()
+    protected function _before(): void
     {
-        $this->vfsStreamDirectory = vfsStream::setup('root', null, [
-            'config' => [
-                'Shared' => [
-                    'stores.php' => file_get_contents(codecept_data_dir('stores.php')),
-                    'config_default.php' => file_get_contents(codecept_data_dir('empty_config_default.php')),
-                ],
-            ],
-        ]);
+        $this->logConfigMock = $this->getMockBuilder(LogConfig::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->logCommunicationFactory = new LogFactory();
+        $this->logCommunicationFactory->setConfig($this->logConfigMock);
     }
 
     /**
      * @return void
      */
-    public function testCreateGelfHandler()
+    public function testCreateGelfHandler(): void
     {
-        Config::getInstance()->init();
+        $this->logConfigMock->expects($this->atLeastOnce())
+            ->method('getLogLevel')
+            ->willReturn(Logger::INFO);
+
+        $this->logConfigMock->expects($this->atLeastOnce())
+            ->method('getLogstashHost')
+            ->willReturn(LogConstants::LOGSTASH_HOST_VALUE);
+
+        $this->logConfigMock->expects($this->atLeastOnce())
+            ->method('getLogstashPort')
+            ->willReturn(LogConstants::LOGSTASH_PORT_VALUE);
 
         $gelfHandler = $this->logCommunicationFactory->createGelfHandler();
 

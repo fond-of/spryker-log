@@ -4,6 +4,7 @@ namespace FondOfSpryker\Shared\Log;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
+use Monolog\Logger;
 
 trait AwsCloudWatchHandlerPluginTrait
 {
@@ -95,6 +96,10 @@ trait AwsCloudWatchHandlerPluginTrait
      */
     public function close(): void
     {
+        if (Logger::API === 1) {
+            return;
+        }
+
         $this->getHandler()->close();
     }
 }

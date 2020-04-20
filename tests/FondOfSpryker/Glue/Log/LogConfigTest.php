@@ -1,6 +1,6 @@
 <?php
 
-namespace FondOfSpryker\Yves\Log;
+namespace FondOfSpryker\Glue\Log;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Shared\Log\LogConstants;
@@ -9,7 +9,7 @@ use Monolog\Logger;
 class LogConfigTest extends Unit
 {
     /**
-     * @var \FondOfSpryker\Yves\Log\LogConfig|\PHPUnit\Framework\MockObject\MockObject
+     * @var \FondOfSpryker\Glue\Log\LogConfig|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $logConfig;
 
@@ -212,11 +212,11 @@ class LogConfigTest extends Unit
     {
         $this->logConfig->expects($this->atLeastOnce())
             ->method('get')
-            ->with(LogConstants::AWS_LOG_GROUP_NAME_YVES, LogConstants::AWS_LOG_GROUP_NAME_YVES_DEFAULT_VALUE)
-            ->willReturn(LogConstants::AWS_LOG_GROUP_NAME_YVES_DEFAULT_VALUE);
+            ->with(LogConstants::AWS_LOG_GROUP_NAME_GLUE, LogConstants::AWS_LOG_GROUP_NAME_GLUE_DEFAULT_VALUE)
+            ->willReturn(LogConstants::AWS_LOG_GROUP_NAME_GLUE_DEFAULT_VALUE);
 
         $this->assertEquals(
-            LogConstants::AWS_LOG_GROUP_NAME_YVES_DEFAULT_VALUE,
+            LogConstants::AWS_LOG_GROUP_NAME_GLUE_DEFAULT_VALUE,
             $this->logConfig->getAwsLogGroupName()
         );
     }
@@ -228,11 +228,11 @@ class LogConfigTest extends Unit
     {
         $this->logConfig->expects($this->atLeastOnce())
             ->method('get')
-            ->with(LogConstants::AWS_LOG_STREAM_NAME_YVES, LogConstants::AWS_LOG_STREAM_NAME_YVES_DEFAULT_VALUE)
-            ->willReturn(LogConstants::AWS_LOG_STREAM_NAME_YVES_DEFAULT_VALUE);
+            ->with(LogConstants::AWS_LOG_STREAM_NAME_GLUE, LogConstants::AWS_LOG_STREAM_NAME_GLUE_DEFAULT_VALUE)
+            ->willReturn(LogConstants::AWS_LOG_STREAM_NAME_GLUE_DEFAULT_VALUE);
 
         $this->assertEquals(
-            LogConstants::AWS_LOG_STREAM_NAME_YVES_DEFAULT_VALUE,
+            LogConstants::AWS_LOG_STREAM_NAME_GLUE_DEFAULT_VALUE,
             $this->logConfig->getAwsLogStreamName()
         );
     }
@@ -260,11 +260,11 @@ class LogConfigTest extends Unit
     {
         $this->logConfig->expects($this->atLeastOnce())
             ->method('get')
-            ->with(LogConstants::AWS_LOG_LEVEL_YVES, LogConstants::AWS_LOG_LEVEL_YVES_DEFAULT_VALUE)
-            ->willReturn(LogConstants::AWS_LOG_LEVEL_YVES_DEFAULT_VALUE);
+            ->with(LogConstants::AWS_LOG_LEVEL_GLUE, LogConstants::AWS_LOG_LEVEL_GLUE_DEFAULT_VALUE)
+            ->willReturn(LogConstants::AWS_LOG_LEVEL_GLUE_DEFAULT_VALUE);
 
         $this->assertEquals(
-            LogConstants::AWS_LOG_LEVEL_YVES_DEFAULT_VALUE,
+            LogConstants::AWS_LOG_LEVEL_GLUE_DEFAULT_VALUE,
             $this->logConfig->getAwsLogLevel()
         );
     }
@@ -360,11 +360,11 @@ class LogConfigTest extends Unit
     {
         $this->logConfig->expects($this->atLeastOnce())
             ->method('get')
-            ->with(LogConstants::AWS_LOG_GROUP_NAME_YVES, LogConstants::AWS_LOG_GROUP_NAME_YVES_DEFAULT_VALUE)
-            ->willReturn('oryx-yves');
+            ->with(LogConstants::AWS_LOG_GROUP_NAME_GLUE, LogConstants::AWS_LOG_GROUP_NAME_GLUE_DEFAULT_VALUE)
+            ->willReturn('oryx-glue');
 
         $this->assertEquals(
-            'oryx-yves',
+            'oryx-glue',
             $this->logConfig->getAwsLogGroupName()
         );
     }
@@ -376,7 +376,7 @@ class LogConfigTest extends Unit
     {
         $this->logConfig->expects($this->atLeastOnce())
             ->method('get')
-            ->with(LogConstants::AWS_LOG_STREAM_NAME_YVES, LogConstants::AWS_LOG_STREAM_NAME_YVES_DEFAULT_VALUE)
+            ->with(LogConstants::AWS_LOG_STREAM_NAME_GLUE, LogConstants::AWS_LOG_STREAM_NAME_GLUE_DEFAULT_VALUE)
             ->willReturn('ec2-instance');
 
         $this->assertEquals(
@@ -408,7 +408,7 @@ class LogConfigTest extends Unit
     {
         $this->logConfig->expects($this->atLeastOnce())
             ->method('get')
-            ->with(LogConstants::AWS_LOG_LEVEL_YVES, LogConstants::AWS_LOG_LEVEL_YVES_DEFAULT_VALUE)
+            ->with(LogConstants::AWS_LOG_LEVEL_GLUE, LogConstants::AWS_LOG_LEVEL_GLUE_DEFAULT_VALUE)
             ->willReturn(Logger::INFO);
 
         $this->assertEquals(

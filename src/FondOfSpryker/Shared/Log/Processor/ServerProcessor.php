@@ -24,6 +24,7 @@ class ServerProcessor extends SprykerServerProcessor
         $serverData = parent::getData();
 
         $request = Request::createFromGlobals();
+
         $serverData[static::X_FORWARDED_FOR] = $request->server->get('HTTP_X_FORWARDED_FOR', null);
 
         return $serverData;
