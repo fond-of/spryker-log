@@ -4,6 +4,7 @@ namespace FondOfSpryker\Glue\Log;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use FondOfSpryker\Shared\Log\LogConstants;
+use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
@@ -14,6 +15,7 @@ use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
 use Spryker\Glue\Log\LogFactory as BaseLogFactory;
+use Spryker\Shared\Log\Processor\ProcessorInterface;
 
 /**
  * @method \FondOfSpryker\Glue\Log\LogConfig getConfig()
@@ -39,7 +41,6 @@ class LogFactory extends BaseLogFactory
 
     /**
      * @return \Maxbanton\Cwh\Handler\CloudWatch
-     * @throws \Exception
      */
     public function createCloudWatchHandler(): CloudWatch
     {
@@ -125,5 +126,13 @@ class LogFactory extends BaseLogFactory
     protected function createJsonFormatter(): JsonFormatter
     {
         return new JsonFormatter();
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    public function createServerProcessor(): ProcessorInterface
+    {
+        return new ServerProcessor();
     }
 }

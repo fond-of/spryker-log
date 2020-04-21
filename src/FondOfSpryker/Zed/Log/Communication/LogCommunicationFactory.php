@@ -15,6 +15,7 @@ use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
+use Spryker\Shared\Log\Processor\ProcessorInterface;
 use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicationFactory;
 
 /**
@@ -27,7 +28,7 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
      */
     public function createSlackHandler(): SlackHandler
     {
-        $slackHandler = new SlackHandler(
+        return new SlackHandler(
             $this->getConfig()->getSlackToken(),
             $this->getConfig()->getSlackChannel(),
             $this->getConfig()->getSlackUsername(),
@@ -35,13 +36,10 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
             null,
             $this->getConfig()->getLogLevel()
         );
-
-        return $slackHandler;
     }
 
     /**
-     * @return \Maxbanton\Cwh\Handler\CloudWatch
-     * @throws \Exception
+     * @return \Monolog\Handler\HandlerInterface|\Maxbanton\Cwh\Handler\CloudWatch
      */
     public function createCloudWatchHandler(): CloudWatch
     {
@@ -91,13 +89,19 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     }
 
     /**
-     * Deprecated: Will be renamed to createServerProcessorPublic() in the next major release
-     *
      * @return \Spryker\Shared\Log\Processor\ProcessorInterface
      */
-    public function createServerProcessorPublic()
+    public function createServerProcessorPublic(): ProcessorInterface
     {
         return new ServerProcessor();
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    protected function createServerProcessor(): ProcessorInterface
+    {
+        return $this->createServerProcessorPublic();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace FondOfSpryker\Yves\Log;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use FondOfSpryker\Shared\Log\LogConstants;
+use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
@@ -13,7 +14,7 @@ use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
-use Monolog\Logger;
+use Spryker\Shared\Log\Processor\ProcessorInterface;
 use Spryker\Yves\Log\LogFactory as BaseLogFactory;
 
 /**
@@ -40,7 +41,6 @@ class LogFactory extends BaseLogFactory
 
     /**
      * @return \Maxbanton\Cwh\Handler\CloudWatch
-     * @throws \Exception
      */
     public function createCloudWatchHandler(): CloudWatch
     {
@@ -100,6 +100,25 @@ class LogFactory extends BaseLogFactory
         return new UdpTransport($host, $port);
     }
 
+    /**
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    public function createServerProcessorPublic(): ProcessorInterface
+    {
+        return new ServerProcessor();
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    protected function createServerProcessor(): ProcessorInterface
+    {
+        return $this->createServerProcessorPublic();
+    }
+
+    /**
+     * @return \Monolog\Handler\HandlerInterface|\Aws\CloudWatchLogs\CloudWatchLogsClient
+     */
     protected function createCloudWatchLogsClient(): CloudWatchLogsClient
     {
         return new CloudWatchLogsClient($this->createAwsSdkParams());
