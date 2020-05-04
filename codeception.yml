@@ -1,4 +1,4 @@
-namespace: FondOfSpryker
+namespace: fond-of-spryker/log
 suites:
   unit:
     path: .
