@@ -18,7 +18,7 @@ trait SlackHandlerPluginTrait
      */
     protected function getHandler(): HandlerInterface
     {
-        if (!$this->handler) {
+        if ($this->handler === null) {
             $this->handler = $this->getFactory()->createSlackHandler();
         }
 
