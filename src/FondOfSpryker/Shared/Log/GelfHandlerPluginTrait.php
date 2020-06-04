@@ -21,6 +21,7 @@ trait GelfHandlerPluginTrait
         if (!$this->handler) {
             $this->handler = $this->getFactory()->createGelfHandler();
         }
+
         return $this->handler;
     }
 

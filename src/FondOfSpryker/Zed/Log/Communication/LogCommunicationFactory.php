@@ -115,15 +115,18 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
         return new UdpTransport($host, $port);
     }
 
+    /**
+     * @return \Aws\CloudWatchLogs\CloudWatchLogsClient
+     */
     protected function createCloudWatchLogsClient(): CloudWatchLogsClient
     {
-        return new CloudWatchLogsClient($this->createAwsSdkParams());
+        return new CloudWatchLogsClient($this->getAwsSdkParams());
     }
 
     /**
      * @return array
      */
-    protected function createAwsSdkParams(): array
+    protected function getAwsSdkParams(): array
     {
         return [
             LogConstants::AWS_SDK_PARAM_REGION => $this->getConfig()->getAwsRegion(),

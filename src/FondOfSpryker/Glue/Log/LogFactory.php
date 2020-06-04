@@ -100,6 +100,9 @@ class LogFactory extends BaseLogFactory
         return new UdpTransport($host, $port);
     }
 
+    /**
+     * @return \Aws\CloudWatchLogs\CloudWatchLogsClient
+     */
     protected function createCloudWatchLogsClient(): CloudWatchLogsClient
     {
         return new CloudWatchLogsClient($this->createAwsSdkParams());
