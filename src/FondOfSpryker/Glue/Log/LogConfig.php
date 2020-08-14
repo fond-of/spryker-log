@@ -132,6 +132,6 @@ class LogConfig extends BaseLogConfig
      */
     public function getLogFormatterType(): string
     {
-        return $this->get(LogConstants::AWS_LOG_FORMATTER_TYPE, LogConstants::LOG_FORMATTER_TYPE_LINE);
+        return $this->get(LogConstants::AWS_LOG_FORMATTER_TYPE_GLUE, LogConstants::LOG_FORMATTER_TYPE_LINE);
     }
 }
