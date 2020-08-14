@@ -126,4 +126,12 @@ class LogConfig extends BaseLogConfig
     {
         return $this->get(LogConstants::AWS_LOG_BATCH_SIZE, LogConstants::AWS_LOG_BATCH_SIZE_DEFAULT_VALUE);
     }
+
+    /**
+     * @return string
+     */
+    public function getLogFormatterType(): string
+    {
+        return $this->get(LogConstants::AWS_LOG_FORMATTER_TYPE, LogConstants::LOG_FORMATTER_TYPE_LINE);
+    }
 }

@@ -132,4 +132,8 @@ interface LogConstants extends BaseLogConstants
     public const AWS_SDK_PARAM_KEY = 'key';
     public const AWS_SDK_PARAM_SECRET = 'secret';
     //------------
+
+    public const AWS_LOG_FORMATTER_TYPE = 'LOG_FORMATTER_TYPE';
+    public const LOG_FORMATTER_TYPE_LINE = 'line';
+    public const LOG_FORMATTER_TYPE_JSON = 'json';
 }

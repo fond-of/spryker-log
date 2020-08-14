@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Yves\Log;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
+use Exception;
 use FondOfSpryker\Shared\Log\LogConstants;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
@@ -11,9 +12,9 @@ use Gelf\Transport\UdpTransport;
 use Maxbanton\Cwh\Handler\CloudWatch;
 use Monolog\Formatter\GelfMessageFormatter;
 use Monolog\Formatter\JsonFormatter;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
-use Monolog\Logger;
 use Spryker\Yves\Log\LogFactory as BaseLogFactory;
 
 /**
@@ -40,7 +41,6 @@ class LogFactory extends BaseLogFactory
 
     /**
      * @return \Maxbanton\Cwh\Handler\CloudWatch
-     * @throws \Exception
      */
     public function createCloudWatchHandler(): CloudWatch
     {
@@ -53,9 +53,8 @@ class LogFactory extends BaseLogFactory
             $this->getConfig()->getAwsLogTags(),
             $this->getConfig()->getAwsLogLevel()
         );
-        $handler->setFormatter($this->createJsonFormatter());
 
-        return $handler;
+        return $this->setCloudwatchFormatter($handler);
     }
 
     /**
@@ -71,6 +70,32 @@ class LogFactory extends BaseLogFactory
         $streamHandler->setFormatter($this->createGelfMessageFormatter());
 
         return $streamHandler;
+    }
+
+    /**
+     * @param \Maxbanton\Cwh\Handler\CloudWatch $handler
+     *
+     * @throws \Exception
+     *
+     * @return \Maxbanton\Cwh\Handler\CloudWatch
+     */
+    protected function setCloudwatchFormatter(CloudWatch $handler): CloudWatch
+    {
+        $type = $this->getConfig()->getLogFormatterType();
+
+        if ($type === LogConstants::LOG_FORMATTER_TYPE_LINE) {
+            $handler->setFormatter($this->createLineFormatter());
+
+            return $handler;
+        }
+
+        if ($type === LogConstants::LOG_FORMATTER_TYPE_JSON) {
+            $handler->setFormatter($this->createJsonFormatter());
+
+            return $handler;
+        }
+
+        throw new Exception(sprintf('Logger type %s not known!', $type));
     }
 
     /**
@@ -100,15 +125,18 @@ class LogFactory extends BaseLogFactory
         return new UdpTransport($host, $port);
     }
 
+    /**
+     * @return \Aws\CloudWatchLogs\CloudWatchLogsClient
+     */
     protected function createCloudWatchLogsClient(): CloudWatchLogsClient
     {
-        return new CloudWatchLogsClient($this->createAwsSdkParams());
+        return new CloudWatchLogsClient($this->getAwsSdkParams());
     }
 
     /**
      * @return array
      */
-    protected function createAwsSdkParams(): array
+    protected function getAwsSdkParams(): array
     {
         return [
             LogConstants::AWS_SDK_PARAM_REGION => $this->getConfig()->getAwsRegion(),
@@ -126,5 +154,13 @@ class LogFactory extends BaseLogFactory
     protected function createJsonFormatter(): JsonFormatter
     {
         return new JsonFormatter();
+    }
+
+    /**
+     * @return \Monolog\Formatter\LineFormatter
+     */
+    protected function createLineFormatter(): LineFormatter
+    {
+        return new LineFormatter();
     }
 }
