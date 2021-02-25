@@ -21,3 +21,17 @@ coverage:
   exclude:
     - src/FondOfSpryker/Zed/Log/Communication/Plugin/Handler/*.php
     - src/FondOfSpryker/Yves/Log/Plugin/Handler/*.php
+
+modules:
+  enabled:
+    - \FondOfCodeception\Module\Spryker
+  config:
+    \FondOfCodeception\Module\Spryker:
+      generate_transfer: false
+      generate_map_classes: false
+  standalone:
+    modules:
+      config:
+        \FondOfCodeception\Module\Spryker:
+          generate_transfer: true
+          generate_map_classes: true
