@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ServerProcessor extends SprykerServerProcessor
 {
-    const X_FORWARDED_FOR = 'x_forwarded_for';
+    public const X_FORWARDED_FOR = 'x_forwarded_for';
 
     /**
      * Get data
@@ -24,6 +24,7 @@ class ServerProcessor extends SprykerServerProcessor
         $serverData = parent::getData();
 
         $request = Request::createFromGlobals();
+
         $serverData[static::X_FORWARDED_FOR] = $request->server->get('HTTP_X_FORWARDED_FOR', null);
 
         return $serverData;

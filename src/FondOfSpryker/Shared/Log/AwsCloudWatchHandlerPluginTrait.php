@@ -6,7 +6,7 @@ use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 
-trait GelfHandlerPluginTrait
+trait AwsCloudWatchHandlerPluginTrait
 {
     /**
      * @var \Monolog\Handler\HandlerInterface
@@ -19,7 +19,7 @@ trait GelfHandlerPluginTrait
     protected function getHandler(): HandlerInterface
     {
         if (!$this->handler) {
-            $this->handler = $this->getFactory()->createGelfHandler();
+            $this->handler = $this->getFactory()->createCloudWatchHandler();
         }
 
         return $this->handler;
@@ -92,8 +92,6 @@ trait GelfHandlerPluginTrait
     }
 
     /**
-     * @void
-     *
      * @return void
      */
     public function close(): void

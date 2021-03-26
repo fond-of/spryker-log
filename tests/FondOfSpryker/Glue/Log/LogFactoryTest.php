@@ -1,6 +1,6 @@
 <?php
 
-namespace FondOfSpryker\Yves\Log;
+namespace FondOfSpryker\Glue\Log;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Shared\Log\LogConstants;
@@ -13,12 +13,12 @@ use Monolog\Logger;
 class LogFactoryTest extends Unit
 {
     /**
-     * @var \FondOfSpryker\Yves\Log\LogFactory
+     * @var \FondOfSpryker\Glue\Log\LogFactory
      */
     protected $logFactory;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Yves\Log\LogConfig
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Glue\Log\LogConfig
      */
     protected $logConfigMock;
 
@@ -136,9 +136,9 @@ class LogFactoryTest extends Unit
     /**
      * @return void
      */
-    public function testCreateServerProcessorPublic(): void
+    public function testCreateServerProcessor(): void
     {
-        $serverProcessorPublic = $this->logFactory->createServerProcessorPublic();
+        $serverProcessorPublic = $this->logFactory->createServerProcessor();
 
         $this->assertInstanceOf(ServerProcessor::class, $serverProcessorPublic);
     }

@@ -2,14 +2,20 @@
 
 namespace FondOfSpryker\Glue\Log;
 
+use Aws\CloudWatchLogs\CloudWatchLogsClient;
+use FondOfSpryker\Shared\Log\LogConstants;
+use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
 use Gelf\Transport\UdpTransport;
+use Maxbanton\Cwh\Handler\CloudWatch;
 use Monolog\Formatter\GelfMessageFormatter;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
 use Spryker\Glue\Log\LogFactory as BaseLogFactory;
+use Spryker\Shared\Log\Processor\ProcessorInterface;
 
 /**
  * @method \FondOfSpryker\Glue\Log\LogConfig getConfig()
@@ -17,8 +23,6 @@ use Spryker\Glue\Log\LogFactory as BaseLogFactory;
 class LogFactory extends BaseLogFactory
 {
     /**
-     * @throws
-     *
      * @return \Monolog\Handler\HandlerInterface|\Monolog\Handler\SlackHandler
      */
     public function createSlackHandler(): SlackHandler
@@ -33,6 +37,25 @@ class LogFactory extends BaseLogFactory
         );
 
         return $slackHandler;
+    }
+
+    /**
+     * @return \Maxbanton\Cwh\Handler\CloudWatch
+     */
+    public function createCloudWatchHandler(): CloudWatch
+    {
+        $handler = new CloudWatch(
+            $this->createCloudWatchLogsClient(),
+            $this->getConfig()->getAwsLogGroupName(),
+            $this->getConfig()->getAwsLogStreamName(),
+            $this->getConfig()->getAwsLogRetentionDays(),
+            $this->getConfig()->getAwsLogBatchSize(),
+            $this->getConfig()->getAwsLogTags(),
+            $this->getConfig()->getAwsLogLevel()
+        );
+        $handler->setFormatter($this->createJsonFormatter());
+
+        return $handler;
     }
 
     /**
@@ -73,6 +96,46 @@ class LogFactory extends BaseLogFactory
     {
         $host = $this->getConfig()->getLogstashHost();
         $port = $this->getConfig()->getLogstashPort();
+
         return new UdpTransport($host, $port);
+    }
+
+    /**
+     * @return \Aws\CloudWatchLogs\CloudWatchLogsClient
+     */
+    protected function createCloudWatchLogsClient(): CloudWatchLogsClient
+    {
+        return new CloudWatchLogsClient($this->createAwsSdkParams());
+    }
+
+    /**
+     * @return array
+     */
+    protected function createAwsSdkParams(): array
+    {
+        return [
+            LogConstants::AWS_SDK_PARAM_REGION => $this->getConfig()->getAwsRegion(),
+            LogConstants::AWS_SDK_PARAM_VERSION => $this->getConfig()->getAwsVersion(),
+            LogConstants::AWS_SDK_PARAM_CREDENTIALS => [
+                LogConstants::AWS_SDK_PARAM_KEY => $this->getConfig()->getAwsKey(),
+                LogConstants::AWS_SDK_PARAM_SECRET => $this->getConfig()->getAwsSecret(),
+            ],
+        ];
+    }
+
+    /**
+     * @return \Monolog\Formatter\JsonFormatter
+     */
+    protected function createJsonFormatter(): JsonFormatter
+    {
+        return new JsonFormatter();
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    public function createServerProcessor(): ProcessorInterface
+    {
+        return new ServerProcessor();
     }
 }

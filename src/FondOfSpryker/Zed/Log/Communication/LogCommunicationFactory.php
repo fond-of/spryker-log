@@ -2,14 +2,20 @@
 
 namespace FondOfSpryker\Zed\Log\Communication;
 
+use Aws\CloudWatchLogs\CloudWatchLogsClient;
+use FondOfSpryker\Shared\Log\LogConstants;
 use FondOfSpryker\Shared\Log\Processor\ServerProcessor;
 use Gelf\Publisher;
 use Gelf\PublisherInterface;
 use Gelf\Transport\AbstractTransport;
 use Gelf\Transport\UdpTransport;
+use Maxbanton\Cwh\Handler\CloudWatch;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\GelfMessageFormatter;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\GelfHandler;
 use Monolog\Handler\SlackHandler;
+use Spryker\Shared\Log\Processor\ProcessorInterface;
 use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicationFactory;
 
 /**
@@ -18,13 +24,11 @@ use Spryker\Zed\Log\Communication\LogCommunicationFactory as BaseLogCommunicatio
 class LogCommunicationFactory extends BaseLogCommunicationFactory
 {
     /**
-     * @throws
-     *
      * @return \Monolog\Handler\HandlerInterface|\Monolog\Handler\SlackHandler
      */
     public function createSlackHandler(): SlackHandler
     {
-        $slackHandler = new SlackHandler(
+        return new SlackHandler(
             $this->getConfig()->getSlackToken(),
             $this->getConfig()->getSlackChannel(),
             $this->getConfig()->getSlackUsername(),
@@ -32,8 +36,25 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
             null,
             $this->getConfig()->getLogLevel()
         );
+    }
 
-        return $slackHandler;
+    /**
+     * @return \Monolog\Handler\HandlerInterface|\Maxbanton\Cwh\Handler\CloudWatch
+     */
+    public function createCloudWatchHandler(): CloudWatch
+    {
+        $handler = new CloudWatch(
+            $this->createCloudWatchLogsClient(),
+            $this->getConfig()->getAwsLogGroupName(),
+            $this->getConfig()->getAwsLogStreamName(),
+            $this->getConfig()->getAwsLogRetentionDays(),
+            $this->getConfig()->getAwsLogBatchSize(),
+            $this->getConfig()->getAwsLogTags(),
+            $this->getConfig()->getAwsLogLevel()
+        );
+        $handler->setFormatter($this->createJsonFormatter());
+
+        return $handler;
     }
 
     /**
@@ -54,7 +75,7 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     /**
      * @return \Monolog\Formatter\FormatterInterface|\Monolog\Formatter\GelfMessageFormatter
      */
-    protected function createGelfMessageFormatter()
+    protected function createGelfMessageFormatter(): FormatterInterface
     {
         return new GelfMessageFormatter(APPLICATION);
     }
@@ -68,13 +89,19 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
     }
 
     /**
-     * Deprecated: Will be renamed to createServerProcessorPublic() in the next major release
-     *
      * @return \Spryker\Shared\Log\Processor\ProcessorInterface
      */
-    public function createServerProcessorPublic()
+    public function createServerProcessorPublic(): ProcessorInterface
     {
         return new ServerProcessor();
+    }
+
+    /**
+     * @return \Spryker\Shared\Log\Processor\ProcessorInterface
+     */
+    protected function createServerProcessor(): ProcessorInterface
+    {
+        return $this->createServerProcessorPublic();
     }
 
     /**
@@ -86,5 +113,36 @@ class LogCommunicationFactory extends BaseLogCommunicationFactory
         $port = $this->getConfig()->getLogstashPort();
 
         return new UdpTransport($host, $port);
+    }
+
+    /**
+     * @return \Aws\CloudWatchLogs\CloudWatchLogsClient
+     */
+    protected function createCloudWatchLogsClient(): CloudWatchLogsClient
+    {
+        return new CloudWatchLogsClient($this->getAwsSdkParams());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAwsSdkParams(): array
+    {
+        return [
+            LogConstants::AWS_SDK_PARAM_REGION => $this->getConfig()->getAwsRegion(),
+            LogConstants::AWS_SDK_PARAM_VERSION => $this->getConfig()->getAwsVersion(),
+            LogConstants::AWS_SDK_PARAM_CREDENTIALS => [
+                LogConstants::AWS_SDK_PARAM_KEY => $this->getConfig()->getAwsKey(),
+                LogConstants::AWS_SDK_PARAM_SECRET => $this->getConfig()->getAwsSecret(),
+            ],
+        ];
+    }
+
+    /**
+     * @return \Monolog\Formatter\JsonFormatter
+     */
+    protected function createJsonFormatter(): JsonFormatter
+    {
+        return new JsonFormatter();
     }
 }

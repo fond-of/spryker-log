@@ -2,7 +2,7 @@
 
 namespace FondOfSpryker\Zed\Log\Communication\Plugin\Handler;
 
-use FondOfSpryker\Shared\Log\GelfHandlerPluginTrait;
+use FondOfSpryker\Shared\Log\AwsCloudWatchHandlerPluginTrait;
 use Spryker\Shared\Log\Dependency\Plugin\LogHandlerPluginInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
@@ -11,7 +11,7 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  * @method \Spryker\Zed\Log\Business\LogFacadeInterface getFacade()
  * @method \FondOfSpryker\Zed\Log\LogConfig getConfig()
  */
-class GelfHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
+class AwsCloudWatchHandlerPlugin extends AbstractPlugin implements LogHandlerPluginInterface
 {
-    use GelfHandlerPluginTrait;
+    use AwsCloudWatchHandlerPluginTrait;
 }
